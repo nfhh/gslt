@@ -1,0 +1,78 @@
+{% if IMAGEUPLOAD_USE_UPLOAD and IMAGEUPLOAD_INDEX_ENABLE and UCP_IMAGEUPLOAD_INDEX and loops.images|length %}
+
+{% if IMAGEUPLOAD_IS_COLLAPSIBLE %}
+	<a class="category{% if S_IMAGEUPLOAD_HIDDEN %} hidden-category{% endif %} imageupload-category"></a>
+{% endif %}
+
+<div class="forabg">
+	<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="row-item">
+					<dt>{{ lang('IMAGEUPLOAD_UPLOADED_IMAGES') }}</dt>
+					<dd style="border: none">&nbsp;</dd>
+				</dl>
+				{% if IMAGEUPLOAD_IS_COLLAPSIBLE %}
+				<a href="{{ U_IMAGEUPLOAD_COLLAPSE_URL }}"
+					class="collapse-btn imageupload-collapse"
+						data-hidden="{{ S_IMAGEUPLOAD_HIDDEN }}"
+						data-ajax="phpbb_collapse"
+						data-overlay="true"
+						data-title-alt="{{ lang('IMAGEUPLOAD_COLLAPSIBLE_CATEGORIES_TITLE', ((not S_IMAGEUPLOAD_HIDDEN) * 1)) }}"
+						title="{{ lang('IMAGEUPLOAD_COLLAPSIBLE_CATEGORIES_TITLE', (S_IMAGEUPLOAD_HIDDEN * 1)) }}">
+						<i class="fa {% if S_IMAGEUPLOAD_HIDDEN %}fa-plus-square{% else %}fa-minus-square{% endif %}"></i>
+					</a>
+				{% endif %}
+			</li>
+		</ul>
+		<ul class="forums collapsible" style="max-height:200px; overflow-x:hidden; overflow-y:auto;">
+			<li class="row-items">
+				<dl>
+					<dt>
+						<fieldset class="fields1">
+							<p>{% if S_IMAGEUPLOAD_CHAT_INSERT %}{{ lang('IMAGEUPLOAD_INDEXPAGE_CHAT') }}{% else %}{{ lang('IMAGEUPLOAD_INDEXPAGE') }}{% endif %}</p>
+							<div class="panel upload_inner">
+								<div class="inner">
+								{% for images in loops.images %}
+									<div style="float:left; text-align: center;" class="upload_enabled">
+										<div class="imageupload_index-preview">
+											<img class="imageupload_index" id="{{ images.FILENAME_REAL }}" src="{{ images.IMAGEPATH }}" title="{{ images.FILENAME }} - {{ images.WIDTH }} {{ lang('PIXEL') }} * {{ images.HEIGHT }} {{ lang('PIXEL') }} - {{ images.SIZE }}"	/>
+										</div>
+										<div>{% if S_IMAGEUPLOAD_CHAT_INSERT %}<i class="button" onclick="insert_text(' [img]{{ images.IMAGEPATH }}[/img] ');" data-mchat-action="add">{{ images.FILENAME }}</i>{% else %}{{ images.FILENAME }}{% endif %}</div>
+										<div id="myModal" class="modal">
+											<span class="imgclose" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+											<img class="modal-content" id="image_show_id">
+											<div id="caption"></div>
+										</div>
+									</div>
+									<script>
+										var modal = document.getElementById('myModal');
+
+										var img = document.getElementById('{{ images.FILENAME_REAL }}');
+										var modalImg = document.getElementById("image_show_id");
+										var captionText = document.getElementById("caption");
+										img.onclick = function(){
+											modal.style.display = "block";
+											modalImg.src = this.src;
+											captionText.innerHTML = this.alt;
+										}
+
+										var span = document.getElementsByClassName("imgclose")[0];
+
+										span.onclick = function() {
+											modal.style.display = "none";
+										}
+									</script>
+								{% endfor %}
+								</div>
+							</div>
+						</fieldset>
+					</dt>
+					<dd style="border: none">&nbsp;</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+</div>
+{% endif %}
+

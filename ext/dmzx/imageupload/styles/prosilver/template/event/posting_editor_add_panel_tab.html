@@ -1,0 +1,6 @@
+{% if IMAGEUPLOAD_USE_UPLOAD and loops.images|length %}
+<li id="imageupload-panel-tab" class="tab">
+	<a aria-controls="imageupload-panel" role="tab" data-subpanel="imageupload-panel" href="#imageupload">{{ lang('IMAGEUPLOAD_UPLOADED_IMAGES') }}</a>
+</li>
+{% endif %}
+

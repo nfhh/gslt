@@ -1,0 +1,46 @@
+{
+	"name": "dmzx/imageupload",
+	"type": "phpbb-extension",
+	"description": "This extension will add an upload system for images to your forum.",
+	"homepage": "https://www.dmzx-web.net",
+	"version": "1.0.8",
+	"time": "2019-10-09",
+	"keywords": [
+		"phpbb",
+		"extension",
+		"imageupload"
+	],
+	"license": "GPL-2.0-only",
+	"authors": [
+		{
+			"name": "dmzx",
+			"homepage": "https://www.dmzx-web.net",
+			"email": "info@dmzx-web.net",
+			"role": "Extension Developer"
+		},
+		{
+			"name": "martin",
+			"homepage": "http://www.martins-phpbb.com",
+			"role": "Extension Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.4",
+		"composer/installers": "~1.0"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "Image Upload",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.2.0,<4.0.0@dev"
+		},
+		"version-check": {
+			"host": "www.dmzx-web.net",
+			"directory": "/versions",
+			"filename": "imageupload_version.json",
+			"ssl": true
+		}
+	}
+}

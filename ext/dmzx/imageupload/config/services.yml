@@ -1,0 +1,81 @@
+imports:
+    - { resource: tables.yml }
+services:
+    dmzx.imageupload.listener:
+        class: dmzx\imageupload\event\listener
+        arguments:
+            - '@config'
+            - '@template'
+            - '@log'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '@pagination'
+            - '@ext.manager'
+            - '@path_helper'
+            - '%dmzx.imageupload.table.image_upload%'
+            - '@controller.helper'
+            - '@auth'
+            - '@service_container'
+            - '%core.php_ext%'
+            - '@?phpbb.collapsiblecategories.operator'
+        tags:
+            - { name: event.listener }
+    dmzx.imageupload.admin.controller:
+        class: dmzx\imageupload\controller\admin_controller
+        arguments:
+            - '@config'
+            - '@template'
+            - '@log'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '@pagination'
+            - '@ext.manager'
+            - '@path_helper'
+            - '@filesystem'
+            - '@service_container'
+            - '@config_text'
+            - '%dmzx.imageupload.table.image_upload%'
+    dmzx.imageupload.controller.upload:
+        class: dmzx\imageupload\controller\imageupload
+        arguments:
+            - '@config'
+            - '@dmzx.imageupload.core.functions'
+            - '@template'
+            - '@user'
+            - '@auth'
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@request'
+            - '@ext.manager'
+            - '@path_helper'
+            - '@config_text'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%dmzx.imageupload.table.image_upload%'
+            - '@?files.factory'
+    dmzx.imageupload.core.functions:
+        class: dmzx\imageupload\core\functions
+        arguments:
+            - '@template'
+            - '@config'
+            - '@ext.manager'
+            - '@config_text'
+            - '@log'
+            - '@user'
+    dmzx.imageupload.ucp.controller:
+        class: dmzx\imageupload\controller\ucp_controller
+        arguments:
+            - '@template'
+            - '@log'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '@ext.manager'
+            - '@path_helper'
+            - '@filesystem'
+            - '%dmzx.imageupload.table.image_upload%'
+            - '@controller.helper'
+            - '@auth'
+            - '%core.root_path%'

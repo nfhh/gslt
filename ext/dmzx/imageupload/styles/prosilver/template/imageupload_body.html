@@ -1,0 +1,50 @@
+{% INCLUDE 'overall_header.html' %}
+
+<form method="post" id="add_imageupload" {{ S_FORM_ENCTYPE }}>
+	<div class="panel" id="showdiv">
+		<div class="inner">
+			<h2>{{ lang('IMAGEUPLOAD_UPLOAD_SECTION') }}</h2>
+			<p>{{ lang('IMAGEUPLOAD_UPLOAD_MESSAGE') }}</p>
+			<p>{{ IMAGEUPLOAD_ALLOWED_SIZE }}</p>
+			<dl>
+				<dt><label>{{ lang('IMAGEUPLOAD_NEW_FILENAME') }}{{ lang('COLON') }}</label> <input class="inputbox autowidth" type="file" name="filename" size="52" /></dt>
+				<dd><label>{{ lang('ALLOWED') }} {{ lang('EXTENSION') }}{{ lang('COLON') }}</label>{{ IMAGEUPLOAD_ALLOWED_EXT }}</dd>
+			</dl>
+		</div>
+	</div>
+	<div class="panel bg2">
+		<div class="inner">
+			<fieldset class="submit-buttons">
+				<input class="button1" id="submit" name="submit" value="{{ lang('SUBMIT') }}" type="submit" />&nbsp;
+				{{ S_FORM_TOKEN }}
+			</fieldset>
+		</div>
+	</div>
+</form>
+
+{% if FILENAME %}
+<div class="panel bg2">
+	<div class="inner">
+		<fieldset class="fields2">
+			<h4 id="showdiv">{{ lang('IMAGEUPLOAD_SUCCEEDED') }}<br /><br />{{ WIDTH }} {{ lang('PIXEL') }} * {{ HEIGHT }} {{ lang('PIXEL') }} - {{ SIZE }}</h4>
+			<p id="codes">
+				<label id="codehtml">{{ lang('IMAGEUPLOAD_DIRECT_LINK') }}{{ lang('COLON') }}</label><br />
+				<input type="text" value="{{ FILENAME }}" id="link" /><i class="buttoncopy" data-copytarget="#link">{{ lang('IMAGEUPLOAD_COPY') }}</i><br />
+				<label id="codehtml">{{ lang('IMAGEUPLOAD_URL_LINK') }}{{ lang('COLON') }}</label><br />
+				<input type="text" value="[url={{ FILENAME }}]{{ lang('IMAGEUPLOAD_BY') }} {{ SITENAME }}[/url]" id="url" /><i class="buttoncopy" data-copytarget="#url">{{ lang('IMAGEUPLOAD_COPY') }}</i><br />
+				<label id="codehtml">{{ lang('IMAGEUPLOAD_IMG_LINK') }}{{ lang('COLON') }}</label><br />
+				<input type="text" value="[img]{{ FILENAME }}[/img]" id="img" /><i class="buttoncopy" data-copytarget="#img">{{ lang('IMAGEUPLOAD_COPY') }}</i><br />
+				<label id="codehtml">{{ lang('IMAGEUPLOAD_HSIMG_LINK') }}{{ lang('COLON') }}</label><br />
+				<input type="text" value="[hsimg]{{ FILENAME }}[/hsimg]" id="hsimg" /><i class="buttoncopy" data-copytarget="#hsimg">{{ lang('IMAGEUPLOAD_COPY') }}</i><br /><br />
+				<div id="showdiv">
+					<img id="upload" src="{{ FILENAME }}" title="{{ lang('IMAGEUPLOAD_BY') }} {{ SITENAME }}" /><br />
+				</div>
+			</p>
+		</fieldset>
+	</div>
+</div>
+{% endif %}
+
+{% INCLUDEJS 'js/copy.js' %}
+
+{% INCLUDE 'overall_footer.html' %}
