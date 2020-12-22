@@ -226,9 +226,10 @@ class post extends \phpbb\notification\type\base
 		{
 			$usernames[] = $this->language->lang('NOTIFICATION_X_OTHERS', $trimmed_responders_cnt);
 		}
-
+        $zwf = $this->get_mode() === 'at' ? '@' : 'Quoted';
 		return $this->language->lang(
 			$this->language_key,
+            $zwf,
 			phpbb_generate_string_list($usernames, $this->user),
 			$responders_cnt
 		);
@@ -246,6 +247,11 @@ class post extends \phpbb\notification\type\base
 			censor_text($this->get_data('topic_title'))
 		);
 	}
+
+    public function get_mode()
+    {
+        return censor_text($this->get_data('mode'));
+    }
 
 	/**
 	* Get email template

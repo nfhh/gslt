@@ -198,6 +198,8 @@ abstract class base implements \phpbb\notification\type\type_interface
 
 			'notification_data'		=> array(),
 		), $this->data);
+
+        $this->data['notification_data']['mode'] = $type_data['mode']; // add mode to serialize
 	}
 
 	/**

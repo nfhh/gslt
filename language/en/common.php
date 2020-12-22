@@ -472,7 +472,7 @@ $lang = array_merge($lang, array(
 	'NOTIFICATION_POST_DISAPPROVED'		=> '<strong>Post disapproved</strong>:',
 	'NOTIFICATION_POST_IN_QUEUE'		=> '<strong>Post approval</strong> request by %1$s:',
 	'NOTIFICATION_QUOTE'				=> array(
-		1	=> '<strong>Quoted</strong> by %1$s in:',
+		1	=> '<strong>%1$s</strong> by %2$s in:',
 	),
 	'NOTIFICATION_REFERENCE'			=> '"%1$s"',
 	'NOTIFICATION_REASON'				=> '<em>Reason:</em> %1$s.',

@@ -2367,6 +2367,7 @@ str;
     if ($post_visibility == ITEM_APPROVED)
     {
 //        var_dump($mode);die; // quote // string(2) "at"
+        $notification_data['mode'] = $mode;
         switch ($mode)
         {
             case 'post':
