@@ -140,13 +140,14 @@ abstract class PHP extends Renderer
 	// 展示格式化
     protected function renderAt($xml)
     {
+        var_dump($xml);
         preg_match('/(?<=author=")(.+?)(?=")/', $xml, $matched);
         $user_name = $matched[0];
         preg_match('/(?<=user_id=")(.+?)(?=")/', $xml, $matched);
         $user_id = $matched[0];
         $content = trim(strip_tags($xml));
         return <<<str
-<div class="myat"><strong><i class="icon fa-at fa-fw ftw" aria-hidden="true"></i><span class="sr-only">{L_BUTTON_AT}</span></strong><a href="./memberlist.php?mode=viewprofile&u=$user_id">$user_name</a>
+<div class="myat afv"><strong><i class="icon fa-at fa-fw ftw" aria-hidden="true"></i><span class="sr-only">{L_BUTTON_AT}</span></strong><a href="./memberlist.php?mode=viewprofile&u=$user_id">$user_name</a>
 </div>
 $content
 str;

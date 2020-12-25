@@ -1480,7 +1480,8 @@ if (!count($error) && $preview) {
         $flags |= ($config['allow_sig_links']) ? OPTION_FLAG_LINKS : 0;
         $flags |= ($config['allow_sig_smilies']) ? OPTION_FLAG_SMILIES : 0;
 
-        $preview_signature = generate_text_for_display($preview_signature, $preview_signature_uid,
+        $preview_signature = generate_text_for_display(
+            $preview_signature, $preview_signature_uid,
             $preview_signature_bitfield, $flags, false);
     } else {
         $preview_signature = '';
@@ -1656,8 +1657,7 @@ $filename_data = $message_parser->filename_data;
 if ($mode == 'at') {
     $message_parser->message = str_replace('quote', 'at', $message_parser->message);
 }
-$post_data['post_text'] = $message_parser->message; // 有了
-
+$post_data['post_text'] = $message_parser->message; // 添加at
 
 if (count($post_data['poll_options']) || (isset($post_data['poll_title']) && !$bbcode_utils->is_empty($post_data['poll_title']))) {
     $message_parser->message = $post_data['poll_title'];

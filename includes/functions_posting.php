@@ -1535,7 +1535,8 @@ function submit_post(
 
     // Start the transaction here
     $db->sql_transaction('begin');
-    // 保存数据库前格式化
+
+    // 保存数据库posts表前格式化
     if ($post_mode == 'at' || strpos($data_ary['message'], '[/at]') !== false) {
         $str = $data_ary['message'];
 
@@ -1562,8 +1563,8 @@ str;
     // Collect Information
     switch ($post_mode) {
         case 'post':
-        case 'reply':
-        case 'at':
+        case 'reply': // 解析ok
+        case 'at': // 没解析
             $sql_data[POSTS_TABLE]['sql'] = [
                 'forum_id' => $data_ary['forum_id'],
                 'poster_id' => (int) $user->data['user_id'],
@@ -1619,7 +1620,6 @@ str;
                     ];
                 }
             }
-
             // If the person editing this post is different to the one having posted then we will add a log entry stating the edit
             // Could be simplified by only adding to the log if the edit is not tracked - but this may confuse admins/mods
             if ($user->data['user_id'] != $poster_id) {
@@ -1787,6 +1787,7 @@ str;
             break;
     }
 
+
     $poll = $poll_ary;
     $data = $data_ary;
     /**
@@ -1840,7 +1841,7 @@ str;
             ]);
         }
 
-        $sql = 'INSERT INTO '.POSTS_TABLE.' '.$db->sql_build_array('INSERT', $sql_data[POSTS_TABLE]['sql']);
+        $sql = 'INSERT INTO '.POSTS_TABLE.' '.$db->sql_build_array('INSERT', $sql_data[POSTS_TABLE]['sql']); // 可能是这里
         $db->sql_query($sql);
         $data_ary['post_id'] = $db->sql_nextid();
 
@@ -2025,7 +2026,6 @@ str;
             $config->increment('num_files', $files_added, false);
         }
     }
-
     $first_post_has_topic_info = ($post_mode == 'edit_first_post' &&
         (($post_visibility == ITEM_DELETED && $data_ary['topic_posts_softdeleted'] == 1) ||
             ($post_visibility == ITEM_UNAPPROVED && $data_ary['topic_posts_unapproved'] == 1) ||
@@ -2104,7 +2104,7 @@ str;
     }
 
     // Committing the transaction before updating search index
-    $db->sql_transaction('commit');
+    $db->sql_transaction('commit'); // 这个入posts表
 
     // Delete draft if post was loaded...
     $draft_id = $request->variable('draft_loaded', 0);
