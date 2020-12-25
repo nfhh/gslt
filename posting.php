@@ -1552,30 +1552,6 @@ if (!count($error) && $preview) {
     }
 
     if (!count($error)) {
-        // 预览格式化
-        if ($mode == 'at' || strpos($preview_message, '[/at]') !== false) {
-            preg_match("/(?<=at=)(.*?)(?=\s)/i", $preview_message, $matches);
-            $user_name = $matches[0];
-
-            preg_match("/(?<=post_id=)(.*?)(?=\s)/i", $preview_message, $matches);
-            $post_id = $matches[0];
-
-            preg_match("/(?<=time=)(.*?)(?=\s)/i", $preview_message, $matches);
-            $time = $matches[0];
-
-            preg_match("/(?<=user_id=)(.*?)(?=])/i", $preview_message, $matches);
-            $user_id = $matches[0];
-
-            $preview_message = str_replace('<br>', '', $preview_message);
-            $content = preg_replace('/\[at(.*)at\]/i', '', $preview_message);
-
-            $preview_message = <<<str
-<div class="myat"><strong><i class="icon fa-at fa-fw ftw" aria-hidden="true"></i><span class="sr-only">{L_BUTTON_AT}</span></strong><a href="./memberlist.php?mode=viewprofile&u=$user_id">$user_name</a>
-</div>
-$content
-str;
-        }
-
         $template->assign_vars([
             'PREVIEW_SUBJECT' => $preview_subject,
             'PREVIEW_MESSAGE' => $preview_message,

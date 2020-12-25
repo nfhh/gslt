@@ -1536,35 +1536,13 @@ function submit_post(
     // Start the transaction here
     $db->sql_transaction('begin');
 
-    // 保存数据库posts表前格式化
-    if ($post_mode == 'at' || strpos($data_ary['message'], '[/at]') !== false) {
-        $str = $data_ary['message'];
-
-        $sss = strip_tags($str);
-        $content = preg_replace('/\[at(.*)at\]/i', '', $sss);
-
-        preg_match("/(?<=at=)(.*?)(?=\s)/i", $str, $matches);
-        $user_name = $matches[0];
-
-        preg_match("/(?<=post_id=)(.*?)(?=\s)/i", $str, $matches);
-        $post_id = $matches[0];
-
-        preg_match("/(?<=time=)(.*?)(?=\s)/i", $str, $matches);
-        $time = $matches[0];
-
-        preg_match("/(?<=user_id=)(.*?)(?=])/i", $str, $matches);
-        $user_id = $matches[0];
-
-        $data_ary['message'] = <<<str
-<r><AT author="$user_name" post_id="$post_id" time="$time" user_id="$user_id"><s>[at=$user_name post_id=$post_id time=$time user_id=$user_id]</s><e>[/at]</e></AT>$content</r>
-str;
-    }
+    // 不动 自己发艾特自己解析
 
     // Collect Information
     switch ($post_mode) {
         case 'post':
-        case 'reply': // 解析ok
-        case 'at': // 没解析
+        case 'reply':
+        case 'at':
             $sql_data[POSTS_TABLE]['sql'] = [
                 'forum_id' => $data_ary['forum_id'],
                 'poster_id' => (int) $user->data['user_id'],

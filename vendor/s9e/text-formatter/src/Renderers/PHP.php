@@ -118,11 +118,12 @@ abstract class PHP extends Renderer
 	{
 		try
 		{
-			if ($this->canQuickRender($xml)){
-                if (strpos($xml, '</AT>') !== false) {
-                    return $this->renderAt($xml);
+            if ($this->canQuickRender($xml)){
+                $xml = $this->renderQuick($xml);
+                if (strpos($xml, '[/at]') !== false) {
+                    $xml = $this->renderAt($xml);
                 }
-                return $this->renderQuick($xml);
+                return $xml;
             }
 		}
 		catch (RuntimeException $e)
@@ -137,17 +138,26 @@ abstract class PHP extends Renderer
 		return $html;
 	}
 
-	// 展示格式化
+	// 展示格式化艾特 有bbcode
     protected function renderAt($xml)
     {
-        var_dump($xml);
-        preg_match('/(?<=author=")(.+?)(?=")/', $xml, $matched);
-        $user_name = $matched[0];
-        preg_match('/(?<=user_id=")(.+?)(?=")/', $xml, $matched);
-        $user_id = $matched[0];
-        $content = trim(strip_tags($xml));
+        preg_match("/(?<=at=)(.*?)(?=\s)/i", $xml, $matches);
+        $user_name = $matches[0];
+
+        preg_match("/(?<=post_id=)(.*?)(?=\s)/i", $xml, $matches);
+        $post_id = $matches[0];
+
+        preg_match("/(?<=time=)(.*?)(?=\s)/i", $xml, $matches);
+        $time = $matches[0];
+
+        preg_match("/(?<=user_id=)(.*?)(?=])/i", $xml, $matches);
+        $user_id = $matches[0];
+
+        $xml = str_replace('<br>', '', $xml);
+        $content = preg_replace('/\[at(.*)at\]/i', '', $xml);
+
         return <<<str
-<div class="myat afv"><strong><i class="icon fa-at fa-fw ftw" aria-hidden="true"></i><span class="sr-only">{L_BUTTON_AT}</span></strong><a href="./memberlist.php?mode=viewprofile&u=$user_id">$user_name</a>
+<div class="myat aaa"><strong><i class="icon fa-at fa-fw ftw" aria-hidden="true"></i><span class="sr-only">{L_BUTTON_AT}</span></strong><a href="./memberlist.php?mode=viewprofile&u=$user_id">$user_name</a>
 </div>
 $content
 str;

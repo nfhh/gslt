@@ -25,13 +25,40 @@ abstract class Renderer
 	}
 	public function render($xml)
 	{
-		if (\substr($xml, 0, 3) === '<t>' && \substr($xml, -4) === '</t>')
-			return $this->renderPlainText($xml);
-		else
-			return $this->renderRichText(\preg_replace('(<[eis]>[^<]*</[eis]>)', '', $xml));
+         if (\substr($xml, 0, 3) === '<t>' && \substr($xml, -4) === '</t>'){
+            return $this->renderPlainText($xml);
+        } else {
+            return $this->renderRichText(\preg_replace('(<[eis]>[^<]*</[eis]>)', '', $xml));
+        }
 	}
 	protected function renderPlainText($xml)
 	{
+        // 列表展示和添加&编辑预览兜底 手动解析下艾特纯文本
+        if (strpos($xml, '[/at]') !== false) {
+
+            $xml = str_replace('[/at]<br/>','[/at]',$xml);
+
+            preg_match("/(?<=at=)(.*?)(?=\s)/i", $xml, $matches);
+            $user_name = $matches[0];
+
+            preg_match("/(?<=post_id=)(.*?)(?=\s)/i", $xml, $matches);
+            $post_id = $matches[0];
+
+            preg_match("/(?<=time=)(.*?)(?=\s)/i", $xml, $matches);
+            $time = $matches[0];
+
+            preg_match("/(?<=user_id=)(.*?)(?=])/i", $xml, $matches);
+            $user_id = $matches[0];
+
+            $xml = str_replace('<br>', '', $xml);
+            $content = preg_replace('/\[at(.*)at\]/i', '', $xml);
+
+            return <<<str
+<div class="myat bbb"><strong><i class="icon fa-at fa-fw ftw" aria-hidden="true"></i><span class="sr-only">{L_BUTTON_AT}</span></strong><a href="./memberlist.php?mode=viewprofile&u=$user_id">$user_name</a>
+</div>
+<div>$content</div>
+str;
+        }
 		$html = \substr($xml, 3, -4);
 		$html = \str_replace('<br/>', '<br>', $html);
 		$html = $this->decodeSMP($html);
